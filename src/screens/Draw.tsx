@@ -1,13 +1,14 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { useState } from "react";
 import {
-  Dimensions,
+  HStack,
+  Input,
+  Pressable,
   ScrollView,
   Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+  VStack,
+} from "native-base";
+import { useState } from "react";
+import { Dimensions } from "react-native";
 import Animated, { StretchInX, StretchOutX } from "react-native-reanimated";
 import { Checkbox } from "../components/Checkbox";
 import { Container } from "../components/Container";
@@ -69,83 +70,162 @@ export function Draw() {
     <Container>
       <Header title={game.name} />
       <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
-        <Text className="text-white font-semibold text-lg ml-4 mt-4">
+        <Text
+          fontWeight="semibold"
+          fontSize="lg"
+          mt="4"
+          ml="4"
+        >
           Número para serem excluídos
         </Text>
-        <View className="mt-4 flex-row flex-wrap justify-evenly">
+        <HStack
+          mt="4"
+          flexWrap="wrap"
+          justifyContent="space-evenly"
+        >
           {range.map((num) => (
-            <View key={num} style={{ width: CHECK_WIDTH }}>
+            <VStack
+              key={num}
+              style={{ width: CHECK_WIDTH }}
+            >
               <Checkbox
                 title={num}
                 checked={!excluded.includes(num)}
                 onPress={() => handleToggleExclude(num)}
               />
-            </View>
+            </VStack>
           ))}
-        </View>
-        <View>
+        </HStack>
+        <VStack>
           {excluded.length > 0 && (
-            <Animated.View entering={StretchInX} exiting={StretchOutX}>
-              <TouchableOpacity
-                className="w-full bg-red-800 p-4 justify-center items-center rounded-xl mt-5"
+            <Animated.View
+              entering={StretchInX}
+              exiting={StretchOutX}
+            >
+              <Pressable
+                _pressed={{ opacity: 0.7 }}
+                w="full"
+                bg="red.800"
+                p="4"
+                justifyContent="center"
+                alignItems="center"
+                rounded="xl"
+                mt="5"
                 onPress={() => setExcluded([])}
               >
-                <Text className="text-white font-semibold text-lg">
+                <Text
+                  color="white"
+                  fontWeight="semibold"
+                  fontSize="lg"
+                >
                   Selecionar todos
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
             </Animated.View>
           )}
-        </View>
+        </VStack>
         {game.keepSomeNums && (
-          <Text className="text-white font-semibold text-lg ml-4 mt-4">
+          <Text
+            color="white"
+            fontWeight="semibold"
+            fontSize="lg"
+            ml="4"
+            mt="4"
+          >
             Número para manter
           </Text>
         )}
-        <View className="mt-4 flex-row flex-wrap justify-evenly">
+        <HStack
+          mt="4"
+          flexWrap="wrap"
+          justifyContent="space-evenly"
+        >
           {game.keepSomeNums &&
             range.map((num) => (
-              <View key={num} style={{ width: CHECK_WIDTH }}>
+              <VStack
+                key={num}
+                style={{ width: CHECK_WIDTH }}
+              >
                 <Checkbox
                   title={num}
                   checked={keep.includes(num)}
                   onPress={() => handleToggleKeep(num)}
                 />
-              </View>
+              </VStack>
             ))}
-        </View>
-        <View>
+        </HStack>
+        <VStack>
           {keep.length > 0 && (
-            <Animated.View entering={StretchInX} exiting={StretchOutX}>
-              <TouchableOpacity
-                className="w-full bg-red-800 p-4 justify-center items-center rounded-xl mt-5"
+            <Animated.View
+              entering={StretchInX}
+              exiting={StretchOutX}
+            >
+              <Pressable
+                _pressed={{ opacity: 0.7 }}
+                w="full"
+                bg="red.800"
+                p="4"
+                justifyContent="center"
+                alignItems="center"
+                rounded="xl"
+                mt="5"
                 onPress={() => setExcluded([])}
               >
-                <Text className="text-white font-semibold text-lg">
+                <Text
+                  color="white"
+                  fontWeight="semibold"
+                  fontSize="lg"
+                >
                   Deselecionar todos
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
             </Animated.View>
           )}
-        </View>
+        </VStack>
       </ScrollView>
-      <View className="p-4">
-        <View className="my-4 flex-row justify-around">
-          <Text className="text-white text-lg mb-2">Quantos Cartões?</Text>
-          <TextInput
-            className="border-2 border-gray-300 w-1/5 rounded-3xl px-4 text-white"
+      <VStack p="4">
+        <HStack
+          my="4"
+          justifyContent="space-around"
+        >
+          <Text
+            color="white"
+            fontSize="lg"
+            mb="2"
+          >
+            Quantos Cartões?
+          </Text>
+          <Input
+            borderWidth="2"
+            borderColor="gray.300"
+            w="1/5"
+            rounded="3xl"
+            px="4"
+            color="white"
             keyboardType="decimal-pad"
             onChangeText={(t) => setNumCards(Number(t))}
             value={String(numCards)}
           />
-        </View>
-        <TouchableOpacity
-          className="w-full bg-green-800 p-4 justify-center items-center rounded-xl"
+        </HStack>
+        <Pressable
+          _pressed={{ opacity: 0.7 }}
+          w="full"
+          bg="green.800"
+          p="4"
+          justifyContent="center"
+          alignItems="center"
+          rounded="xl"
           onPress={getDrew}
         >
-          <Text className="text-white font-semibold text-lg">Sortear</Text>
-        </TouchableOpacity>
-      </View>
+          <Text
+            color="white"
+            fontWeight="semibold"
+            fontSize="lg"
+          >
+            Sortear
+          </Text>
+        </Pressable>
+      </VStack>
     </Container>
   );
 }

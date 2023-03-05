@@ -1,5 +1,5 @@
 import { useRoute } from "@react-navigation/native";
-import { FlatList, Text, View } from "react-native";
+import { FlatList, HStack, Text, VStack } from "native-base";
 import { Container } from "../components/Container";
 import { Header } from "../components/Header";
 import { Game } from "../utils/drawNumbers";
@@ -20,18 +20,32 @@ export function Drew() {
         data={games}
         keyExtractor={(game) => game.title}
         renderItem={({ item }) => (
-          <View key={item.title} className="m-4">
-            <Text className="text-white font-semibold text-xl">
+          <VStack
+            key={item.title}
+            m="4"
+          >
+            <Text
+              color="white"
+              fontWeight="semibold"
+              fontSize="xl"
+            >
               {item.title}
             </Text>
-            <View className="flex-row justify-around flex-wrap mt-4">
+            <HStack
+              justifyContent="space-around"
+              flexWrap="wrap"
+              mt="4"
+            >
               {item.numbers.map((num) => (
-                <Text key={`${num}`} className="text-white text-base">
+                <Text
+                  key={`${num}`}
+                  color="white"
+                >
                   {num}
                 </Text>
               ))}
-            </View>
-          </View>
+            </HStack>
+          </VStack>
         )}
       />
     </Container>

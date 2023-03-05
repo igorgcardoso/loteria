@@ -1,5 +1,5 @@
+import { VStack } from "native-base";
 import { ReactNode } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 interface Props {
   children: ReactNode;
@@ -7,6 +7,12 @@ interface Props {
 
 export function Container({ children }: Props) {
   return (
-    <SafeAreaView className="flex-1 bg-slate-900">{children}</SafeAreaView>
+    <VStack
+      safeArea
+      flex={1}
+      bg="darkBlue.900"
+    >
+      {children}
+    </VStack>
   );
 }

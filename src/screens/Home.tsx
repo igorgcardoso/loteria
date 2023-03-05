@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { VStack } from "native-base";
 import { Container } from "../components/Container";
 import { Game } from "../components/Game";
 import { GAMES } from "../games";
@@ -6,11 +6,19 @@ import { GAMES } from "../games";
 export function Home() {
   return (
     <Container>
-      <View className="flex-1 justify-evenly items-center p-5">
+      <VStack
+        flex={1}
+        justifyContent="space-evenly"
+        alignItems="center"
+        p={5}
+      >
         {GAMES.map((game) => (
-          <Game game={game} key={game.name} />
+          <Game
+            game={game}
+            key={game.name}
+          />
         ))}
-      </View>
+      </VStack>
     </Container>
   );
 }

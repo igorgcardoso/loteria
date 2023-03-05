@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { Text, TouchableOpacity } from "react-native";
+import { Pressable, Text } from "native-base";
 import { Game as IGame } from "../games";
 
 interface Props {
@@ -10,15 +10,25 @@ export function Game({ game }: Props) {
   const { navigate } = useNavigation();
 
   return (
-    <TouchableOpacity
-      activeOpacity={0.7}
-      className="w-full p-4 justify-center items-center rounded-md"
+    <Pressable
+      _pressed={{ opacity: 0.7 }}
+      w="full"
+      p="4"
+      justifyContent="center"
+      alignItems="center"
+      rounded="md"
       style={{
         backgroundColor: game.color,
       }}
       onPress={() => navigate("draw", { game })}
     >
-      <Text className="font-bold text-2xl text-white">{game.name}</Text>
-    </TouchableOpacity>
+      <Text
+        fontWeight="bold"
+        fontSize="2xl"
+        color="white"
+      >
+        {game.name}
+      </Text>
+    </Pressable>
   );
 }

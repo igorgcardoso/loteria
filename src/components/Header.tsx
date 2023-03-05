@@ -1,6 +1,6 @@
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { Text, TouchableOpacity, View } from "react-native";
+import { HStack, Pressable, Text } from "native-base";
 
 interface Props {
   title: string;
@@ -10,18 +10,41 @@ interface Props {
 export function Header({ title, showShareButton }: Props) {
   const { goBack } = useNavigation();
   return (
-    <View className="flex-row w-full p-3 bg-slate-600 justify-evenly items-center">
-      <TouchableOpacity activeOpacity={0.7} onPress={goBack}>
-        <Feather name="arrow-left" size={24} color="#FFF" />
-      </TouchableOpacity>
-      <Text className="font-bold text-white text-2xl">{title}</Text>
+    <HStack
+      w="full"
+      p="3"
+      bg="muted.500"
+      justifyContent="space-evenly"
+      alignItems="center"
+    >
+      <Pressable
+        _pressed={{ opacity: 0.7 }}
+        onPress={goBack}
+      >
+        <Feather
+          name="arrow-left"
+          size={24}
+          color="#FFF"
+        />
+      </Pressable>
+      <Text
+        fontWeight="bold"
+        color="white"
+        fontSize="2xl"
+      >
+        {title}
+      </Text>
       {showShareButton ? (
-        <TouchableOpacity activeOpacity={0.7}>
-          <Feather name="share-2" size={18} color="#FFF" />
-        </TouchableOpacity>
+        <Pressable _pressed={{ opacity: 0.7 }}>
+          <Feather
+            name="share-2"
+            size={18}
+            color="#FFF"
+          />
+        </Pressable>
       ) : (
-        <View />
+        <HStack />
       )}
-    </View>
+    </HStack>
   );
 }
