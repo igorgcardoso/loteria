@@ -1,15 +1,18 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
 import {
   HStack,
   Input,
   Pressable,
   ScrollView,
   Text,
+  useTheme,
   VStack,
 } from "native-base";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Dimensions } from "react-native";
 import Animated, { StretchInX, StretchOutX } from "react-native-reanimated";
+import { createShimmerPlaceholder } from "react-native-shimmer-placeholder";
 import { Checkbox } from "../components/Checkbox";
 import { Container } from "../components/Container";
 import { Header } from "../components/Header";
@@ -25,10 +28,13 @@ const SCREEN_HORIZONTAL_PADDING = (32 * 2) / 7;
 export const CHECK_WIDTH =
   Dimensions.get("screen").width / 5 - SCREEN_HORIZONTAL_PADDING;
 
+const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
+
 export function Draw() {
   const [excluded, setExcluded] = useState<number[]>([]);
   const [keep, setKeep] = useState<number[]>([]);
   const [numCards, setNumCards] = useState(1);
+  const [shouldDisplayNumbers, setShouldDisplayNumbers] = useState(false);
 
   const { navigate } = useNavigation();
 
@@ -64,124 +70,139 @@ export function Draw() {
 
   const { game } = route.params as Params;
 
-  const range = generateRange(game.maxNum);
+  const { sizes } = useTheme();
+
+  const range = useMemo(() => generateRange(game.maxNum), [game.maxNum]);
+
+  useEffect(() => {
+    setTimeout(() => setShouldDisplayNumbers(true), 1000);
+  }, []);
 
   return (
     <Container>
       <Header title={game.name} />
       <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
-        <Text
-          fontWeight="semibold"
-          fontSize="lg"
-          mt="4"
-          ml="4"
+        <ShimmerPlaceHolder
+          visible={shouldDisplayNumbers}
+          height={sizes["96"]}
+          style={{ alignSelf: "center" }}
+          width={sizes["96"]}
         >
-          Número para serem excluídos
-        </Text>
-        <HStack
-          mt="4"
-          flexWrap="wrap"
-          justifyContent="space-evenly"
-        >
-          {range.map((num) => (
-            <VStack
-              key={num}
-              style={{ width: CHECK_WIDTH }}
-            >
-              <Checkbox
-                title={num}
-                checked={!excluded.includes(num)}
-                onPress={() => handleToggleExclude(num)}
-              />
-            </VStack>
-          ))}
-        </HStack>
-        <VStack>
-          {excluded.length > 0 && (
-            <Animated.View
-              entering={StretchInX}
-              exiting={StretchOutX}
-            >
-              <Pressable
-                _pressed={{ opacity: 0.7 }}
-                w="full"
-                bg="red.800"
-                p="4"
-                justifyContent="center"
-                alignItems="center"
-                rounded="xl"
-                mt="5"
-                onPress={() => setExcluded([])}
-              >
-                <Text
-                  color="white"
-                  fontWeight="semibold"
-                  fontSize="lg"
-                >
-                  Selecionar todos
-                </Text>
-              </Pressable>
-            </Animated.View>
-          )}
-        </VStack>
-        {game.keepSomeNums && (
           <Text
-            color="white"
             fontWeight="semibold"
             fontSize="lg"
-            ml="4"
             mt="4"
+            ml="4"
           >
-            Número para manter
+            Número para serem excluídos
           </Text>
-        )}
-        <HStack
-          mt="4"
-          flexWrap="wrap"
-          justifyContent="space-evenly"
-        >
-          {game.keepSomeNums &&
-            range.map((num) => (
-              <VStack
-                key={num}
-                style={{ width: CHECK_WIDTH }}
-              >
-                <Checkbox
-                  title={num}
-                  checked={keep.includes(num)}
-                  onPress={() => handleToggleKeep(num)}
-                />
-              </VStack>
-            ))}
-        </HStack>
-        <VStack>
-          {keep.length > 0 && (
-            <Animated.View
-              entering={StretchInX}
-              exiting={StretchOutX}
-            >
-              <Pressable
-                _pressed={{ opacity: 0.7 }}
-                w="full"
-                bg="red.800"
-                p="4"
-                justifyContent="center"
-                alignItems="center"
-                rounded="xl"
-                mt="5"
-                onPress={() => setExcluded([])}
-              >
-                <Text
-                  color="white"
-                  fontWeight="semibold"
-                  fontSize="lg"
+          <HStack
+            mt="4"
+            flexWrap="wrap"
+            justifyContent="space-evenly"
+          >
+            {shouldDisplayNumbers &&
+              range.map((num) => (
+                <VStack
+                  key={num}
+                  style={{ width: CHECK_WIDTH }}
                 >
-                  Deselecionar todos
-                </Text>
-              </Pressable>
-            </Animated.View>
+                  <Checkbox
+                    title={num}
+                    checked={!excluded.includes(num)}
+                    onPress={() => handleToggleExclude(num)}
+                  />
+                </VStack>
+              ))}
+          </HStack>
+          <VStack>
+            {excluded.length > 0 && (
+              <Animated.View
+                entering={StretchInX}
+                exiting={StretchOutX}
+              >
+                <Pressable
+                  _pressed={{ opacity: 0.7 }}
+                  w="full"
+                  bg="red.800"
+                  p="4"
+                  justifyContent="center"
+                  alignItems="center"
+                  rounded="xl"
+                  mt="5"
+                  onPress={() => setExcluded([])}
+                >
+                  <Text
+                    color="white"
+                    fontWeight="semibold"
+                    fontSize="lg"
+                  >
+                    Selecionar todos
+                  </Text>
+                </Pressable>
+              </Animated.View>
+            )}
+          </VStack>
+          {shouldDisplayNumbers && game.keepSomeNums && (
+            <Text
+              color="white"
+              fontWeight="semibold"
+              fontSize="lg"
+              ml="4"
+              mt="4"
+            >
+              Número para manter
+            </Text>
           )}
-        </VStack>
+          <HStack
+            mt="4"
+            flexWrap="wrap"
+            justifyContent="space-evenly"
+          >
+            {shouldDisplayNumbers &&
+              game.keepSomeNums &&
+              range.map((num) => (
+                <VStack
+                  key={num}
+                  style={{ width: CHECK_WIDTH }}
+                >
+                  <Checkbox
+                    title={num}
+                    checked={keep.includes(num)}
+                    onPress={() => handleToggleKeep(num)}
+                  />
+                </VStack>
+              ))}
+          </HStack>
+          <VStack>
+            {keep.length > 0 && (
+              <Animated.View
+                entering={StretchInX}
+                exiting={StretchOutX}
+              >
+                <Pressable
+                  _pressed={{ opacity: 0.7 }}
+                  w="full"
+                  bg="red.800"
+                  p="4"
+                  justifyContent="center"
+                  alignItems="center"
+                  rounded="xl"
+                  mt="5"
+                  onPress={() => setExcluded([])}
+                >
+                  <Text
+                    color="white"
+                    fontWeight="semibold"
+                    fontSize="lg"
+                  >
+                    Deselecionar todos
+                  </Text>
+                </Pressable>
+              </Animated.View>
+            )}
+          </VStack>
+        </ShimmerPlaceHolder>
       </ScrollView>
       <VStack p="4">
         <HStack
