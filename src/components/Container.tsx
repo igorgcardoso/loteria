@@ -8,9 +8,9 @@ interface Props {
 export function Container({ children }: Props) {
   return (
     <VStack
-      safeArea
       flex={1}
       bg="darkBlue.900"
+      safeArea
     >
       {children}
     </VStack>

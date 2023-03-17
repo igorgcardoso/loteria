@@ -5,10 +5,12 @@ import { HStack, Pressable, Text } from "native-base";
 interface Props {
   title: string;
   showShareButton?: boolean;
+  share?: () => void;
 }
 
-export function Header({ title, showShareButton }: Props) {
+export function Header({ title, showShareButton, share }: Props) {
   const { goBack } = useNavigation();
+
   return (
     <HStack
       w="full"
@@ -35,7 +37,10 @@ export function Header({ title, showShareButton }: Props) {
         {title}
       </Text>
       {showShareButton ? (
-        <Pressable _pressed={{ opacity: 0.7 }}>
+        <Pressable
+          _pressed={{ opacity: 0.7 }}
+          onPress={share}
+        >
           <Feather
             name="share-2"
             size={18}
