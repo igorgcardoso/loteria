@@ -3,7 +3,6 @@ export interface Game {
   maxNum: number;
   drawnNum: number;
   color: string;
-  keepSomeNums?: boolean;
 }
 
 export const GAMES: Game[] = [
@@ -18,7 +17,6 @@ export const GAMES: Game[] = [
     maxNum: 25,
     drawnNum: 15,
     color: "#930089",
-    keepSomeNums: true,
   },
   {
     name: "Quina",

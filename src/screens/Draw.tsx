@@ -5,9 +5,10 @@ import {
   Input,
   Pressable,
   ScrollView,
+  Switch,
   Text,
-  useTheme,
   VStack,
+  useTheme,
 } from "native-base";
 import { useEffect, useMemo, useState } from "react";
 import { Dimensions } from "react-native";
@@ -24,9 +25,9 @@ interface Params {
   game: Game;
 }
 
-const SCREEN_HORIZONTAL_PADDING = (32 * 2) / 7;
+const SCREEN_HORIZONTAL_PADDING = 32 / 4;
 export const CHECK_WIDTH =
-  Dimensions.get("screen").width / 5 - SCREEN_HORIZONTAL_PADDING;
+  Dimensions.get("screen").width / 4 - SCREEN_HORIZONTAL_PADDING;
 
 const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
 
@@ -35,6 +36,8 @@ export function Draw() {
   const [keep, setKeep] = useState<number[]>([]);
   const [numCards, setNumCards] = useState(1);
   const [shouldDisplayNumbers, setShouldDisplayNumbers] = useState(false);
+  const [shouldDisplayKeepNumbers, setShouldDisplayKeepNumbers] =
+    useState(false);
 
   const { navigate } = useNavigation();
 
@@ -74,6 +77,15 @@ export function Draw() {
 
   const range = useMemo(() => generateRange(game.maxNum), [game.maxNum]);
 
+  function handleToggleShouldDisplayKeepNumbers() {
+    setShouldDisplayKeepNumbers((prev) => {
+      if (prev) {
+        setKeep([]);
+      }
+      return !prev;
+    });
+  }
+
   useEffect(() => {
     setTimeout(() => setShouldDisplayNumbers(true), 1000);
   }, []);
@@ -94,7 +106,7 @@ export function Draw() {
             mt="4"
             ml="4"
           >
-            Número para serem excluídos
+            Números para serem excluídos
           </Text>
           <HStack
             mt="4"
@@ -143,7 +155,10 @@ export function Draw() {
               </Animated.View>
             )}
           </VStack>
-          {shouldDisplayNumbers && game.keepSomeNums && (
+          <HStack
+            w="full"
+            justifyContent="space-around"
+          >
             <Text
               color="white"
               fontWeight="semibold"
@@ -151,16 +166,22 @@ export function Draw() {
               ml="4"
               mt="4"
             >
-              Número para manter
+              Números para manter
             </Text>
-          )}
+            <Switch
+              size="lg"
+              isChecked={shouldDisplayKeepNumbers}
+              onToggle={handleToggleShouldDisplayKeepNumbers}
+              colorScheme="emerald"
+              onThumbColor="emerald.500"
+            />
+          </HStack>
           <HStack
             mt="4"
             flexWrap="wrap"
             justifyContent="space-evenly"
           >
-            {shouldDisplayNumbers &&
-              game.keepSomeNums &&
+            {shouldDisplayKeepNumbers &&
               range.map((num) => (
                 <VStack
                   key={num}
