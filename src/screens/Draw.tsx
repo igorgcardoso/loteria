@@ -3,20 +3,20 @@ import { LinearGradient } from "expo-linear-gradient";
 import {
   HStack,
   Input,
+  Switch as NBSwitch,
   Pressable,
   ScrollView,
-  Switch,
   Text,
   VStack,
   useTheme,
 } from "native-base";
 import { useEffect, useMemo, useState } from "react";
-import { Dimensions } from "react-native";
+import { Dimensions, Keyboard } from "react-native";
 import Animated, { StretchInX, StretchOutX } from "react-native-reanimated";
 import { createShimmerPlaceholder } from "react-native-shimmer-placeholder";
-import { Checkbox } from "../components/Checkbox";
 import { Container } from "../components/Container";
 import { Header } from "../components/Header";
+import { Switch } from "../components/Switch";
 import { Game } from "../games";
 import { drawNumbers } from "../utils/drawNumbers";
 import { generateRange } from "../utils/generateRange";
@@ -25,9 +25,9 @@ interface Params {
   game: Game;
 }
 
-const SCREEN_HORIZONTAL_PADDING = 32 / 4;
+const SCREEN_HORIZONTAL_PADDING = 32 / 3;
 export const CHECK_WIDTH =
-  Dimensions.get("screen").width / 4 - SCREEN_HORIZONTAL_PADDING;
+  Dimensions.get("screen").width / 3 - SCREEN_HORIZONTAL_PADDING;
 
 const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
 
@@ -38,6 +38,7 @@ export function Draw() {
   const [shouldDisplayNumbers, setShouldDisplayNumbers] = useState(false);
   const [shouldDisplayKeepNumbers, setShouldDisplayKeepNumbers] =
     useState(false);
+  const [isDrawing, setIsDrawing] = useState(false);
 
   const { navigate } = useNavigation();
 
@@ -66,7 +67,18 @@ export function Draw() {
       numCards,
     });
 
+    setIsDrawing(false);
+
     navigate("drew", { games });
+  }
+
+  function handleDraw() {
+    Keyboard.dismiss();
+    if (isDrawing) return;
+
+    setIsDrawing(true);
+
+    setTimeout(getDrew, 1000);
   }
 
   const route = useRoute();
@@ -87,7 +99,7 @@ export function Draw() {
   }
 
   useEffect(() => {
-    setTimeout(() => setShouldDisplayNumbers(true), 1000);
+    setTimeout(() => setShouldDisplayNumbers(true), 200);
   }, []);
 
   return (
@@ -105,6 +117,7 @@ export function Draw() {
             fontSize="lg"
             mt="4"
             ml="4"
+            color="white"
           >
             Números para serem excluídos
           </Text>
@@ -119,10 +132,10 @@ export function Draw() {
                   key={num}
                   style={{ width: CHECK_WIDTH }}
                 >
-                  <Checkbox
+                  <Switch
                     title={num}
-                    checked={!excluded.includes(num)}
-                    onPress={() => handleToggleExclude(num)}
+                    checked={excluded.includes(num)}
+                    onToggle={() => handleToggleExclude(num)}
                   />
                 </VStack>
               ))}
@@ -149,7 +162,7 @@ export function Draw() {
                     fontWeight="semibold"
                     fontSize="lg"
                   >
-                    Selecionar todos
+                    Deselecionar todos
                   </Text>
                 </Pressable>
               </Animated.View>
@@ -168,7 +181,7 @@ export function Draw() {
             >
               Números para manter
             </Text>
-            <Switch
+            <NBSwitch
               size="lg"
               isChecked={shouldDisplayKeepNumbers}
               onToggle={handleToggleShouldDisplayKeepNumbers}
@@ -187,10 +200,10 @@ export function Draw() {
                   key={num}
                   style={{ width: CHECK_WIDTH }}
                 >
-                  <Checkbox
+                  <Switch
                     title={num}
                     checked={keep.includes(num)}
-                    onPress={() => handleToggleKeep(num)}
+                    onToggle={() => handleToggleKeep(num)}
                   />
                 </VStack>
               ))}
@@ -217,7 +230,7 @@ export function Draw() {
                     fontWeight="semibold"
                     fontSize="lg"
                   >
-                    Deselecionar todos
+                    Selecionar todos
                   </Text>
                 </Pressable>
               </Animated.View>
@@ -257,7 +270,11 @@ export function Draw() {
           justifyContent="center"
           alignItems="center"
           rounded="xl"
-          onPress={getDrew}
+          onPress={handleDraw}
+          disabled={isDrawing}
+          _disabled={{
+            bg: "muted.600",
+          }}
         >
           <Text
             color="white"

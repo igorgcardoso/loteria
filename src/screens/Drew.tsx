@@ -20,9 +20,8 @@ export function Drew() {
     let text = "";
     games.forEach((game, idx) => {
       text += `${game.title}\n`;
-      text += `${game.numbers.join(" ")}${
-        idx === games.length - 1 ? "" : "\n\n"
-      }`;
+      text += `${game.numbers.join(" ")}${idx === games.length - 1 ? "" : "\n\n"
+        }`;
     });
     await Clipboard.setStringAsync(text);
     Toast.show({
@@ -60,6 +59,7 @@ export function Drew() {
               justifyContent="space-around"
               flexWrap="wrap"
               mt="4"
+              space="2"
             >
               {item.numbers.map((num) => (
                 <Text
