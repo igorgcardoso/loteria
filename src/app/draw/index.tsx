@@ -1,11 +1,9 @@
 import { Header } from '@src/components/Header';
-import { Game } from '@src/games';
 import { useGame } from '@src/hooks/useGame';
 import clsx from 'clsx';
 import { useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
-  BackHandler,
   Keyboard,
   Text,
   TextInput,
@@ -15,16 +13,10 @@ import {
 
 export default function Draw() {
   const [numCards, setNumCards] = useState('1');
-  const {
-    isDrawing,
-    drawNumbers,
-    game,
-    keptNumbers,
-    excludedNumbers,
-    setGame,
-  } = useGame();
+  const { isDrawing, drawNumbers, game, keptNumbers, excludedNumbers } =
+    useGame();
 
-  const { push, back } = useRouter();
+  const { push } = useRouter();
 
   function handleDraw() {
     Keyboard.dismiss();
@@ -41,19 +33,6 @@ export default function Draw() {
 
     push('/drew');
   }
-
-  useEffect(() => {
-    function backAction() {
-      setGame({} as Game);
-      back();
-      return true;
-    }
-    BackHandler.addEventListener('hardwareBackPress', backAction);
-
-    return () => {
-      BackHandler.removeEventListener('hardwareBackPress', backAction);
-    };
-  }, []);
 
   return (
     <View className="flex-1 bg-blue-950">

@@ -2,7 +2,7 @@
   "expo": {
     "name": "loteria",
     "slug": "loteria",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "scheme": "loteria",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -27,7 +27,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.igorgcardoso.loteria",
-      "versionCode": 6
+      "versionCode": 7
     },
     "web": {
       "favicon": "./assets/icon.png"
