@@ -1,27 +1,38 @@
-import { HStack, ISwitchProps, Switch as NBSwitch, Text } from "native-base";
+import {
+  Switch as RSwitch,
+  SwitchProps,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 
-interface Props extends ISwitchProps {
+interface Props extends SwitchProps {
   checked?: boolean;
   title: string | number;
+  clb: (num: number) => void;
 }
 
-export function Switch({ checked = false, title, ...rest }: Props) {
+export function Switch({ checked = false, title, clb, ...rest }: Props) {
+  function handleChange() {
+    clb(Number(title));
+  }
+
   return (
-    <HStack alignItems="center">
-      <NBSwitch
-        isChecked={checked}
-        mb="2"
-        alignItems="center"
-        size="lg"
+    <TouchableOpacity
+      activeOpacity={0.7}
+      onPress={handleChange}
+      className="mx-3 flex-row items-center justify-center"
+    >
+      <RSwitch
+        className="mb-2"
+        value={checked}
+        trackColor={{ false: '#767577', true: '#81b0ff' }}
+        thumbColor={checked ? '#f5dd4b' : '#f4f3f4'}
+        onChange={handleChange}
         {...rest}
-      >
-      </NBSwitch>
-      <Text
-        ml="3"
-        color="white"
-      >
-        {String(title).padStart(2, "0")}
+      ></RSwitch>
+      <Text className="mb-1 text-base text-white">
+        {String(title).padStart(2, '0')}
       </Text>
-    </HStack>
+    </TouchableOpacity>
   );
 }

@@ -7,39 +7,39 @@ export interface Game {
 
 export const GAMES: Game[] = [
   {
-    name: "Mega Sena",
+    name: 'Mega Sena',
     maxNum: 60,
     drawnNum: 6,
-    color: "#209869",
+    color: '#209869',
   },
   {
-    name: "Lotofácil",
+    name: 'Lotofácil',
     maxNum: 25,
     drawnNum: 15,
-    color: "#930089",
+    color: '#930089',
   },
   {
-    name: "Quina",
+    name: 'Quina',
     maxNum: 80,
     drawnNum: 5,
-    color: "#260085",
+    color: '#260085',
   },
   {
-    name: "Lotománia",
+    name: 'Lotománia',
     maxNum: 100,
     drawnNum: 50,
-    color: "#f78100",
+    color: '#f78100',
   },
   {
-    name: "Timemánia",
+    name: 'Timemánia',
     maxNum: 80,
     drawnNum: 10,
-    color: "#00ff48",
+    color: '#00ff48',
   },
   {
-    name: "Dupla Sena",
+    name: 'Dupla Sena',
     maxNum: 50,
     drawnNum: 6,
-    color: "#a61324",
+    color: '#a61324',
   },
 ];

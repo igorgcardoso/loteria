@@ -1,34 +1,32 @@
-import { useNavigation } from "@react-navigation/native";
-import { Pressable, Text } from "native-base";
-import { Game as IGame } from "../games";
+import { useGame } from '@src/hooks/useGame';
+import { useRouter } from 'expo-router';
+import { Text, TouchableOpacity } from 'react-native';
+import { Game as IGame } from '../games';
 
 interface Props {
   game: IGame;
 }
 
 export function Game({ game }: Props) {
-  const { navigate } = useNavigation();
+  const { push } = useRouter();
+
+  const { setGame } = useGame();
+
+  function handleTouch() {
+    setGame(game);
+    push('/draw');
+  }
 
   return (
-    <Pressable
-      _pressed={{ opacity: 0.7 }}
-      w="full"
-      p="4"
-      justifyContent="center"
-      alignItems="center"
-      rounded="md"
+    <TouchableOpacity
+      className="my-4 w-full items-center justify-center rounded px-4 py-5"
+      activeOpacity={0.7}
       style={{
         backgroundColor: game.color,
       }}
-      onPress={() => navigate("draw", { game })}
+      onPress={handleTouch}
     >
-      <Text
-        fontWeight="bold"
-        fontSize="2xl"
-        color="white"
-      >
-        {game.name}
-      </Text>
-    </Pressable>
+      <Text className="text-2xl font-bold text-white">{game.name}</Text>
+    </TouchableOpacity>
   );
 }

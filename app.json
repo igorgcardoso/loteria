@@ -2,7 +2,8 @@
   "expo": {
     "name": "loteria",
     "slug": "loteria",
-    "version": "1.2.0",
+    "version": "2.0.0",
+    "scheme": "loteria",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
@@ -14,7 +15,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -24,7 +27,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.igorgcardoso.loteria",
-      "versionCode": 4
+      "versionCode": 5
     },
     "web": {
       "favicon": "./assets/icon.png"
