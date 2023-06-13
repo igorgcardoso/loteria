@@ -1,5 +1,6 @@
 import { Game } from '@src/games';
-import { ReactNode, createContext, useState } from 'react';
+import { ReactNode, createContext, useCallback, useState } from 'react';
+import Toast from 'react-native-toast-message';
 
 interface GameProviderProps {
   children: ReactNode;
@@ -49,14 +50,18 @@ export function GameProvider({ children }: GameProviderProps) {
     numCards = 1,
   }: Draw) {
     if (keep.length >= qtd) {
-      return [];
-    }
-
-    if (exclude.length === maxNum) {
+      Toast.show({
+        type: 'error',
+        text1: 'Muitos números mantidos',
+      });
       return [];
     }
 
     if (maxNum - exclude.length < qtd) {
+      Toast.show({
+        type: 'error',
+        text1: 'Não há números suficientes',
+      });
       return [];
     }
 
@@ -94,21 +99,27 @@ export function GameProvider({ children }: GameProviderProps) {
     setDrewGames([]);
   }
 
-  function handleToggleExclude(num: number) {
-    if (excludedNumbers.includes(num)) {
-      setExcludedNumbers((prev) => prev.filter((elem) => elem !== num));
-    } else {
-      setExcludedNumbers((prev) => [...prev, num]);
-    }
-  }
+  const handleToggleExclude = useCallback(
+    (num: number) => {
+      if (excludedNumbers.includes(num)) {
+        setExcludedNumbers((prev) => prev.filter((elem) => elem !== num));
+      } else {
+        setExcludedNumbers((prev) => [...prev, num]);
+      }
+    },
+    [excludedNumbers],
+  );
 
-  function handleToggleKeep(num: number) {
-    if (keptNumbers.includes(num)) {
-      setKeptNumbers((prev) => prev.filter((elem) => elem !== num));
-    } else {
-      setKeptNumbers((prev) => [...prev, num]);
-    }
-  }
+  const handleToggleKeep = useCallback(
+    (num: number) => {
+      if (keptNumbers.includes(num)) {
+        setKeptNumbers((prev) => prev.filter((elem) => elem !== num));
+      } else {
+        setKeptNumbers((prev) => [...prev, num]);
+      }
+    },
+    [keptNumbers],
+  );
 
   function resetKetpAndExcluded() {
     setKeptNumbers([]);

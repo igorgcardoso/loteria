@@ -37,6 +37,9 @@ export default function ChangeNumbers() {
         keyExtractor={(item) => String(item)}
         contentContainerStyle={{
           paddingBottom: 60,
+          paddingTop: 8,
+        }}
+        columnWrapperStyle={{
           justifyContent: 'space-evenly',
         }}
         numColumns={4}
