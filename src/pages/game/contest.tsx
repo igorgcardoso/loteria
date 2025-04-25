@@ -14,7 +14,7 @@ export function Contest() {
 
       <div className="flex flex-col flex-wrap items-center gap-2">
         <span className="">Resultado</span>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center flex-wrap gap-2">
           {lotteryContest?.numbers
             .sort()
             .map((number) => <span key={number}>{number}</span>)}
